@@ -14,6 +14,7 @@ class BasePage:
 
     def open(self):  # noqa
         self.driver.get(self.url)
+        return self
 
     def element_is_visible(self, locator: Tuple[str, str], timeout=timeout):
         return wait(driver=self.driver, timeout=timeout).until(
