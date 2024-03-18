@@ -15,6 +15,9 @@ class TestElementsPage:
 
         @pytest.mark.parametrize("factory", [FakerGeneratorFactory()])
         def test_text_box(self, driver, factory: DataGeneratorFactory):
+            """Test filling out the text box form with valid data and verifying
+            the output matches the input."""
+
             person = generate_person(data_generator=factory.create_generator())
 
             page = TextBoxPage(driver, url=self.page_url).open()
@@ -36,6 +39,9 @@ class TestElementsPage:
         page_url = ElementsPageUrls.CHECKBOX
 
         def test_checkbox(self, driver):
+            """Test ensures that the checkboxes can be clicked and that
+            the names of the clicked checkboxes are correctly displayed in the
+            success list."""
             page = CheckBoxPage(driver, url=self.page_url).open()
             page.expand_all_list()
 
