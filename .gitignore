@@ -1,5 +1,10 @@
 __pycache__/
 .idea/
 
+/allure-results/
+!/allure-results/.gitkeep
+
+
 #Playground file
 sandbox.py
+
