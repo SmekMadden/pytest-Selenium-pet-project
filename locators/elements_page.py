@@ -17,3 +17,11 @@ class CheckBoxPageLocators:
     CHECKBOX_LEAFS_LIST = ("xpath", '//li[@class="rct-node rct-node-leaf"]//label')
     RESULT_CHECKBOX_NAMES = ("xpath", '//span[@class="text-success"]')
     EXPAND_BUTTON = ("xpath", '//button[@title="Expand all"]')
+
+
+class RadioButtonPageLocators:
+    YES_LABEL = ("xpath", '//input[@id="yesRadio"]/../label')
+    IMPRESSIVE_BUTTON_W_LABEL = ("xpath", '//input[@id="impressiveRadio"]/..')
+    NO_BUTTON_W_LABEL = ("xpath", '//input[@id="noRadio"]/..')
+
+    SUCCESS_TEXT = ("xpath", '//span[@class="text-success"]')

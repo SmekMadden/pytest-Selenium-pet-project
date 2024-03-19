@@ -2,7 +2,11 @@ import re
 from typing import Dict, List
 
 from baseclasses.base_page import BasePage
-from locators.elements_page import TextBoxPageLocators, CheckBoxPageLocators
+from locators.elements_page import (
+    TextBoxPageLocators,
+    CheckBoxPageLocators,
+    RadioButtonPageLocators,
+)
 import random
 
 
@@ -61,3 +65,19 @@ class CheckBoxPage(BasePage):
             element.text.lower()
             for element in self.elements_are_visible(self.L.RESULT_CHECKBOX_NAMES)
         ]
+
+
+class RadioButtonsPage(BasePage):
+    L = RadioButtonPageLocators()
+
+    def get_success_text(self):
+        return self.element_is_visible(self.L.SUCCESS_TEXT).text
+
+    def click_yes(self):
+        self.element_is_visible(self.L.YES_LABEL).click()
+
+    def click_impressive(self):
+        self.element_is_visible(self.L.IMPRESSIVE_BUTTON_W_LABEL).click()
+
+    def click_no(self):
+        self.element_is_visible(self.L.NO_BUTTON_W_LABEL).click()

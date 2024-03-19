@@ -5,7 +5,7 @@ from data.data_generator_factories import (
     FakerGeneratorFactory,
 )
 from data.object_generators import generate_person
-from pages.elements_page import TextBoxPage, CheckBoxPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonsPage
 from urls import ElementsPageUrls
 
 
@@ -39,8 +39,8 @@ class TestElementsPage:
         page_url = ElementsPageUrls.CHECKBOX
 
         def test_checkbox(self, driver):
-            """Test ensures that the checkboxes can be clicked and that
-            the names of the clicked checkboxes are correctly displayed in the
+            """Test ensures that the checkboxes can be clicked and that the
+            names of the clicked checkboxes are correctly displayed in the
             success list."""
             page = CheckBoxPage(driver, url=self.page_url).open()
             page.expand_all_list()
@@ -50,3 +50,23 @@ class TestElementsPage:
 
             for name in clicked_names:
                 assert name in result_names
+
+    class TestRadoButtonPage:
+        page_url = ElementsPageUrls.RADIO_BUTTON
+
+        def test_radio_buttons(self, driver):
+            """Test ensures that radio buttons can be clicked and that the
+            success message correctly reflects the clicked radio button
+            option."""
+
+            page = RadioButtonsPage(driver, url=self.page_url).open()
+
+            page.click_yes()
+            assert page.get_success_text() == "Yes"
+
+            page.click_impressive()
+            assert page.get_success_text() == "Impressive"
+
+            # Deliberately made page bug on website!
+            page.click_no()
+            assert page.get_success_text() == "No"
