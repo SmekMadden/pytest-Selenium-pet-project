@@ -25,3 +25,17 @@ class RadioButtonPageLocators:
     NO_BUTTON_W_LABEL = ("xpath", '//input[@id="noRadio"]/..')
 
     SUCCESS_TEXT = ("xpath", '//span[@class="text-success"]')
+
+
+class WebTablesPageLocators:
+    ADD_BUTTON = ("xpath", '//button[@id="addNewRecordButton"]')
+    PEOPLE_LIST = ("xpath", '//div[@class="rt-tr-group"]')
+
+    # registration form popup
+    FIRST_NAME_INPUT = ("xpath", '//input[@id="firstName"]')
+    LAST_NAME_INPUT = ("xpath", '//input[@id="lastName"]')
+    EMAIL_INPUT = ("xpath", '//input[@id="userEmail"]')
+    AGE_INPUT = ("xpath", '//input[@id="age"]')
+    SALARY_INPUT = ("xpath", '//input[@id="salary"]')
+    DEPARTMENT_INPUT = ("xpath", '//input[@id="department"]')
+    SUBMIT_BUTTON = ("xpath", '//button[@id="submit"]')

@@ -1,17 +1,14 @@
 import re
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from baseclasses.base_page import BasePage
-from locators.elements_page import (
-    TextBoxPageLocators,
-    CheckBoxPageLocators,
-    RadioButtonPageLocators,
-)
+
+from locators import elements_page as locators
 import random
 
 
 class TextBoxPage(BasePage):
-    L = TextBoxPageLocators()
+    L = locators.TextBoxPageLocators()
 
     def fill_out_form_and_send(
         self,
@@ -41,7 +38,7 @@ class TextBoxPage(BasePage):
 
 
 class CheckBoxPage(BasePage):
-    L = CheckBoxPageLocators()
+    L = locators.CheckBoxPageLocators()
 
     def expand_all_list(self):
         expand_button = self.element_is_clickable(self.L.EXPAND_BUTTON)
@@ -68,7 +65,7 @@ class CheckBoxPage(BasePage):
 
 
 class RadioButtonsPage(BasePage):
-    L = RadioButtonPageLocators()
+    L = locators.RadioButtonPageLocators()
 
     def get_success_text(self):
         return self.element_is_visible(self.L.SUCCESS_TEXT).text
@@ -81,3 +78,41 @@ class RadioButtonsPage(BasePage):
 
     def click_no(self):
         self.element_is_visible(self.L.NO_BUTTON_W_LABEL).click()
+
+
+class WebTablesPage(BasePage):
+    L = locators.WebTablesPageLocators()
+
+    def open_registration_form(self):
+        self.element_is_visible(self.L.ADD_BUTTON).click()
+
+    def fill_registration_form(
+        self,
+        first_name,
+        last_name,
+        email,
+        age,
+        salary,
+        department,
+    ):
+        self.element_is_visible(self.L.FIRST_NAME_INPUT).send_keys(first_name)
+        self.element_is_visible(self.L.LAST_NAME_INPUT).send_keys(last_name)
+        self.element_is_visible(self.L.EMAIL_INPUT).send_keys(email)
+        self.element_is_visible(self.L.AGE_INPUT).send_keys(age)
+        self.element_is_visible(self.L.SALARY_INPUT).send_keys(salary)
+        self.element_is_visible(self.L.DEPARTMENT_INPUT).send_keys(department)
+
+        self.element_is_visible(self.L.SUBMIT_BUTTON).click()
+
+        return first_name, last_name, str(age), email, str(salary), str(department)
+
+    def get_all_people_from_table(self) -> Tuple:
+        people_objects = self.elements_are_presented(self.L.PEOPLE_LIST)
+        people = []
+
+        for person_object in people_objects:
+            if person_object.text.strip():
+                person: list = person_object.text.split("\n")
+                people.append(tuple(person))
+
+        return tuple(people)

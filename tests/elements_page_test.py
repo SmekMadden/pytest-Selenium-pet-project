@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import pytest
 
 from data.data_generator_factories import (
@@ -5,7 +7,12 @@ from data.data_generator_factories import (
     FakerGeneratorFactory,
 )
 from data.object_generators import generate_person
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonsPage
+from pages.elements_page import (
+    TextBoxPage,
+    CheckBoxPage,
+    RadioButtonsPage,
+    WebTablesPage,
+)
 from urls import ElementsPageUrls
 
 
@@ -22,7 +29,7 @@ class TestElementsPage:
 
             page = TextBoxPage(driver, url=self.page_url).open()
             page.fill_out_form_and_send(
-                full_name=person.fullname,
+                full_name=f"{person.first_name} {person.last_name}",
                 email=person.email,
                 current_address=person.current_address,
                 permanent_address=person.permanent_address,
@@ -70,3 +77,31 @@ class TestElementsPage:
             # Deliberately made page bug on website!
             page.click_no()
             assert page.get_success_text() == "No"
+
+    class TestWebTablesPage:
+        page_url = ElementsPageUrls.WEB_TABLES
+
+        @pytest.mark.parametrize("factory", [FakerGeneratorFactory()])
+        def test_add_person_to_table(self, driver, factory: DataGeneratorFactory):
+            """Test the functionality of the web tables page by registering a
+            person and verifying their data in the table."""
+
+            page = WebTablesPage(driver, url=self.page_url).open()
+            page.open_registration_form()
+
+            p = generate_person(data_generator=factory.create_generator())
+
+            person_data_for_assert = page.fill_registration_form(
+                first_name=p.first_name,
+                last_name=p.last_name,
+                email=p.email,
+                age=p.age,
+                salary=p.salary,
+                department=p.department,
+            )
+
+            people: Tuple = page.get_all_people_from_table()
+
+            assert (
+                person_data_for_assert in people
+            ), f"Person {person_data_for_assert} not found in {people}"

@@ -2,12 +2,17 @@ from abc import ABC, abstractmethod
 
 from faker import Faker
 
+
 # Strategy pattern
 
 
 class DataGenerator(ABC):
     @abstractmethod
-    def gen_full_name(self):
+    def gen_first_name(self):
+        ...
+
+    @abstractmethod
+    def gen_last_name(self):
         ...
 
     @abstractmethod
@@ -19,12 +24,15 @@ class DataGenerator(ABC):
         ...
 
 
-class FakerGenerator(DataGenerator):
+class FakerGenerator(DataGenerator, ABC):
     def __init__(self):
         self.fake = Faker()
 
-    def gen_full_name(self):
-        return self.fake.name()
+    def gen_first_name(self):
+        return self.fake.first_name()
+
+    def gen_last_name(self):
+        return self.fake.last_name()
 
     def gen_email(self):
         return self.fake.email()
