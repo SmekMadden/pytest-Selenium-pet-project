@@ -1,10 +1,15 @@
 import re
 from typing import Dict, List, Tuple
 
+from selenium.webdriver import Keys
+from selenium.webdriver.remote.webelement import WebElement
+
 from baseclasses.base_page import BasePage
 
 from locators import elements_page as locators
 import random
+
+from data.dataclasses.global_dc import Person
 
 
 class TextBoxPage(BasePage):
@@ -94,7 +99,7 @@ class WebTablesPage(BasePage):
         age,
         salary,
         department,
-    ):
+    ) -> Tuple:
         self.element_is_visible(self.L.FIRST_NAME_INPUT).send_keys(first_name)
         self.element_is_visible(self.L.LAST_NAME_INPUT).send_keys(last_name)
         self.element_is_visible(self.L.EMAIL_INPUT).send_keys(email)
@@ -106,7 +111,7 @@ class WebTablesPage(BasePage):
 
         return first_name, last_name, str(age), email, str(salary), str(department)
 
-    def get_all_people_from_table(self) -> Tuple:
+    def get_people_data(self) -> Tuple:
         people_objects = self.elements_are_presented(self.L.PEOPLE_LIST)
         people = []
 
@@ -116,3 +121,65 @@ class WebTablesPage(BasePage):
                 people.append(tuple(person))
 
         return tuple(people)
+
+    def get_people_web_elements(self):
+        return [
+            element
+            for element in self.elements_are_presented(self.L.PEOPLE_LIST)
+            if element.text.strip() != ""
+        ]
+
+    def write_keyword_in_search_input_field(self, keyword):
+        """Types a keyword in search input, results are displaying
+        dynamically."""
+        self.element_is_visible(self.L.SEARCH_INPUT).send_keys(keyword)
+
+    def clear_search_input(self):
+        self.element_is_visible(self.L.SEARCH_INPUT).send_keys(
+            Keys.CONTROL + "a",
+            Keys.DELETE,
+        )
+
+    def open_edit_form(self, person_row: WebElement):
+        person_row.find_element(*self.L.EDIT_BUTTONS).click()
+
+    def update_person_by_edit_form(self, **kwargs):
+        kw_locators = {
+            "first_name": self.L.FIRST_NAME_INPUT,
+            "last_name": self.L.LAST_NAME_INPUT,
+            "email": self.L.EMAIL_INPUT,
+            "age": self.L.AGE_INPUT,
+            "salary": self.L.SALARY_INPUT,
+            "department": self.L.DEPARTMENT_INPUT,
+        }
+
+        for key, value in kwargs.items():
+            locator = kw_locators[key]
+            field = self.element_is_visible(locator)
+            field.clear()
+            field.send_keys(value)
+
+        self.element_is_visible(self.L.SUBMIT_BUTTON).click()
+
+    def get_random_person(self) -> Tuple[WebElement, int]:
+        people: List = self.get_people_web_elements()
+        person_index = random.randint(0, len(people) - 1)  # noqa
+        person_to_edit: WebElement = people[person_index]
+
+        return person_to_edit, person_index
+
+    def get_person_by_index(self, index: int) -> WebElement:
+        return self.get_people_web_elements()[index]
+
+    @staticmethod
+    def get_person_data(person: WebElement) -> Person:
+        person_data = person.text.split("\n")
+
+        return Person(
+            first_name=person_data[0],
+            last_name=person_data[1],
+            age=int(person_data[2]),
+            email=person_data[3],
+            salary=int(person_data[4]),
+            department=person_data[5],
+        )

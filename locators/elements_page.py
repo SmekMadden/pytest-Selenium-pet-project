@@ -30,6 +30,8 @@ class RadioButtonPageLocators:
 class WebTablesPageLocators:
     ADD_BUTTON = ("xpath", '//button[@id="addNewRecordButton"]')
     PEOPLE_LIST = ("xpath", '//div[@class="rt-tr-group"]')
+    SEARCH_INPUT = ("xpath", '//input[@id="searchBox"]')
+    EDIT_BUTTONS = ("xpath", './/span[@title="Edit"]')
 
     # registration form popup
     FIRST_NAME_INPUT = ("xpath", '//input[@id="firstName"]')
