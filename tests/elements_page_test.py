@@ -15,6 +15,7 @@ from pages.elements_page import (
     CheckBoxPage,
     RadioButtonsPage,
     WebTablesPage,
+    ButtonsPage,
 )
 from urls import ElementsPageUrls
 
@@ -183,3 +184,46 @@ class TestWebTablesPage:
         assert updated_person.age == p.age
         assert updated_person.salary == p.salary
         assert updated_person.department == p.department
+
+    def test_delete_person(self, driver):
+        """This test selects a random person from the table, deletes the
+        person's row, and verifies that the person's data is no longer present
+        in the table."""
+        page = WebTablesPage(driver, url=self.page_url).open()
+
+        person_to_delete, person_index = page.get_random_person()
+        person_data = page.get_person_data_as_tuple(person_to_delete)
+        page.delete_person(person_to_delete)
+        people_data = page.get_people_data()
+
+        assert (
+            person_data not in people_data
+        ), f"Person {person_data=} found in {people_data=}"
+
+
+class TestButtonsPage:
+    page_url = ElementsPageUrls.BUTTONS
+
+    def test_double_click_button(self, driver):
+        page = ButtonsPage(driver, url=self.page_url).open()
+        page.double_click_button()
+
+        message = page.get_double_click_message()
+
+        assert message == "You have done a double click"
+
+    def test_right_click_button(self, driver):
+        page = ButtonsPage(driver, url=self.page_url).open()
+        page.right_click_button()
+
+        message = page.get_right_click_message()
+
+        assert message == "You have done a right click"
+
+    def test_click_dynamic_button(self, driver):
+        page = ButtonsPage(driver, url=self.page_url).open()
+        page.click_dynamic_button()
+
+        message = page.get_dynamic_click_message()
+
+        assert message == "You have done a dynamic click"

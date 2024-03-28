@@ -183,3 +183,41 @@ class WebTablesPage(BasePage):
             salary=int(person_data[4]),
             department=person_data[5],
         )
+
+    @staticmethod
+    def get_person_data_as_tuple(person: WebElement) -> Tuple:
+        person_data = person.text.split("\n")
+        return (
+            person_data[0],
+            person_data[1],
+            int(person_data[2]),
+            person_data[3],
+            int(person_data[4]),
+            person_data[5],
+        )
+
+    def delete_person(self, person_row: WebElement):
+        person_row.find_element(*self.L.DELETE_BUTTONS).click()
+
+
+class ButtonsPage(BasePage):
+    L = locators.ButtonsPageLocators()
+
+    def double_click_button(self):
+        element = self.element_is_visible(self.L.DOUBLE_CLICK_BTN)
+        self.double_click_element(element)
+
+    def right_click_button(self):
+        self.right_click_element(self.element_is_visible(self.L.RIGHT_CLICK_BTN))
+
+    def click_dynamic_button(self):
+        self.element_is_visible(self.L.CLICK_ME_BTN).click()
+
+    def get_double_click_message(self) -> str:
+        return self.element_is_visible(self.L.DOUBLE_CLICK_MSG).text
+
+    def get_right_click_message(self) -> str:
+        return self.element_is_visible(self.L.RIGHT_CLICK_MSG).text
+
+    def get_dynamic_click_message(self) -> str:
+        return self.element_is_visible(self.L.CLICK_ME_MSG).text

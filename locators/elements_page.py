@@ -32,6 +32,7 @@ class WebTablesPageLocators:
     PEOPLE_LIST = ("xpath", '//div[@class="rt-tr-group"]')
     SEARCH_INPUT = ("xpath", '//input[@id="searchBox"]')
     EDIT_BUTTONS = ("xpath", './/span[@title="Edit"]')
+    DELETE_BUTTONS = ("xpath", './/span[@title="Delete"]')
 
     # registration form popup
     FIRST_NAME_INPUT = ("xpath", '//input[@id="firstName"]')
@@ -41,3 +42,14 @@ class WebTablesPageLocators:
     SALARY_INPUT = ("xpath", '//input[@id="salary"]')
     DEPARTMENT_INPUT = ("xpath", '//input[@id="department"]')
     SUBMIT_BUTTON = ("xpath", '//button[@id="submit"]')
+
+
+class ButtonsPageLocators:
+    DOUBLE_CLICK_BTN = ("xpath", '//button[@id="doubleClickBtn"]')
+    RIGHT_CLICK_BTN = ("xpath", '//button[@id="rightClickBtn"]')
+    CLICK_ME_BTN = ("xpath", '//button[text()="Click Me"]')
+
+    # Messages
+    DOUBLE_CLICK_MSG = ("xpath", '//p[@id="doubleClickMessage"]')
+    RIGHT_CLICK_MSG = ("xpath", '//p[@id="rightClickMessage"]')
+    CLICK_ME_MSG = ("xpath", '//p[@id="dynamicClickMessage"]')

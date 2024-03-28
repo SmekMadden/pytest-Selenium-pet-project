@@ -1,5 +1,6 @@
 from typing import Tuple
 
+from selenium.webdriver import ActionChains
 from selenium.webdriver.remote.webdriver import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait as wait
@@ -56,3 +57,13 @@ class BasePage:
 
     def go_to_element(self, element):
         self.driver.execute_script("argument[0].scrollIntoView();", element)
+
+    def double_click_element(self, element: WebElement):
+        ActionChains(self.driver).move_to_element(element).double_click(
+            element,
+        ).perform()
+
+    def right_click_element(self, element: WebElement):
+        ActionChains(self.driver).move_to_element(element).context_click(
+            element,
+        ).perform()
