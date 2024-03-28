@@ -29,13 +29,16 @@ def generated_person():
 class TestTextBoxPage:
     page_url = ElementsPageUrls.TEXT_BOX
 
-    def test_text_box(self, driver, generated_person: Person):
+    @pytest.fixture
+    def page(self, driver):
+        return TextBoxPage(driver, url=self.page_url).open()
+
+    def test_text_box(self, driver, page, generated_person: Person):
         """Test filling out the text box form with valid data and verifying the
         output matches the input."""
 
         p: Person = generated_person
 
-        page = TextBoxPage(driver, url=self.page_url).open()
         page.fill_out_form_and_send(
             full_name=p.full_name,
             email=p.email,
@@ -54,11 +57,15 @@ class TestTextBoxPage:
 class TestCheckBoxPage:
     page_url = ElementsPageUrls.CHECKBOX
 
-    def test_checkbox(self, driver):
+    @pytest.fixture
+    def page(self, driver):
+        return CheckBoxPage(driver, url=self.page_url).open()
+
+    def test_checkbox(self, driver, page):
         """Test ensures that the checkboxes can be clicked and that the names
         of the clicked checkboxes are correctly displayed in the success
         list."""
-        page = CheckBoxPage(driver, url=self.page_url).open()
+
         page.expand_all_list()
 
         clicked_names = page.click_random_leafs_of_checkbox_tree()
@@ -71,11 +78,13 @@ class TestCheckBoxPage:
 class TestRadoButtonPage:
     page_url = ElementsPageUrls.RADIO_BUTTON
 
-    def test_radio_buttons(self, driver):
+    @pytest.fixture
+    def page(self, driver):
+        return RadioButtonsPage(driver, url=self.page_url).open()
+
+    def test_radio_buttons(self, driver, page):
         """Test ensures that radio buttons can be clicked and that the success
         message correctly reflects the clicked radio button option."""
-
-        page = RadioButtonsPage(driver, url=self.page_url).open()
 
         page.click_yes()
         assert page.get_success_text() == "Yes"
@@ -91,11 +100,14 @@ class TestRadoButtonPage:
 class TestWebTablesPage:
     page_url = ElementsPageUrls.WEB_TABLES
 
-    def test_add_person_to_table(self, driver, generated_person: Person):
+    @pytest.fixture
+    def page(self, driver):
+        return WebTablesPage(driver, url=self.page_url).open()
+
+    def test_add_person_to_table(self, driver, page, generated_person: Person):
         """Test the functionality of the web tables page by registering a
         person and verifying their data in the table."""
 
-        page = WebTablesPage(driver, url=self.page_url).open()
         page.open_registration_form()
 
         p: Person = generated_person
@@ -115,7 +127,7 @@ class TestWebTablesPage:
             person_data_for_assert in people
         ), f"Person {person_data_for_assert} not found in {people}"
 
-    def test_person_search(self, driver):
+    def test_person_search(self, driver, page):
         """Test the search functionality of the web tables page by inputting a
         keyword related to a randomly selected person's information.
 
@@ -125,7 +137,6 @@ class TestWebTablesPage:
         original state, displaying all people.
 
         """
-        page = WebTablesPage(driver, url=self.page_url).open()
 
         all_people: Tuple = page.get_people_data()
         random_person: Tuple = random.choice(all_people)  # noqa
@@ -147,7 +158,7 @@ class TestWebTablesPage:
             page.get_people_data() == all_people
         ), "After clearing search input, table data is not the same as before"
 
-    def test_update_person(self, driver, generated_person: Person):
+    def test_update_person(self, driver, page, generated_person: Person):
         """Test the functionality of updating a person's information in the web
         tables.
 
@@ -157,8 +168,6 @@ class TestWebTablesPage:
         information matches the input data in the table.
 
         """
-        page = WebTablesPage(driver, url=self.page_url).open()
-
         person_to_edit, person_index = page.get_random_person()
         page.open_edit_form(person_to_edit)
 
@@ -185,12 +194,10 @@ class TestWebTablesPage:
         assert updated_person.salary == p.salary
         assert updated_person.department == p.department
 
-    def test_delete_person(self, driver):
+    def test_delete_person(self, driver, page):
         """This test selects a random person from the table, deletes the
         person's row, and verifies that the person's data is no longer present
         in the table."""
-        page = WebTablesPage(driver, url=self.page_url).open()
-
         person_to_delete, person_index = page.get_random_person()
         person_data = page.get_person_data_as_tuple(person_to_delete)
         page.delete_person(person_to_delete)
@@ -204,26 +211,24 @@ class TestWebTablesPage:
 class TestButtonsPage:
     page_url = ElementsPageUrls.BUTTONS
 
-    def test_double_click_button(self, driver):
-        page = ButtonsPage(driver, url=self.page_url).open()
-        page.double_click_button()
+    @pytest.fixture()
+    def page(self, driver):
+        return ButtonsPage(driver, url=TestButtonsPage.page_url).open()
 
+    def test_double_click_button(self, driver, page):
+        page.double_click_button()
         message = page.get_double_click_message()
 
         assert message == "You have done a double click"
 
-    def test_right_click_button(self, driver):
-        page = ButtonsPage(driver, url=self.page_url).open()
+    def test_right_click_button(self, driver, page):
         page.right_click_button()
-
         message = page.get_right_click_message()
 
         assert message == "You have done a right click"
 
-    def test_click_dynamic_button(self, driver):
-        page = ButtonsPage(driver, url=self.page_url).open()
+    def test_click_dynamic_button(self, driver, page):
         page.click_dynamic_button()
-
         message = page.get_dynamic_click_message()
 
         assert message == "You have done a dynamic click"
