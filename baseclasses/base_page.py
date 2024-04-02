@@ -1,7 +1,7 @@
 from typing import Tuple
 
 from selenium.webdriver import ActionChains
-from selenium.webdriver.remote.webdriver import WebElement
+from selenium.webdriver.remote.webdriver import WebElement, WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait as wait
 
@@ -10,7 +10,7 @@ class BasePage:
     timeout = 5
 
     def __init__(self, driver, url):
-        self.driver = driver
+        self.driver: WebDriver = driver
         self.url = url
 
     def open(self):  # noqa

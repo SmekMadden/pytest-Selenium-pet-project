@@ -1,4 +1,5 @@
 import random
+from pathlib import Path
 from typing import Tuple
 
 import pytest
@@ -16,8 +17,10 @@ from pages.elements_page import (
     RadioButtonsPage,
     WebTablesPage,
     ButtonsPage,
+    LinksPage,
+    UploadDownloadPage,
 )
-from urls import ElementsPageUrls
+from urls import BASE_URL, ElementsPageUrls
 
 
 @pytest.fixture(scope="function")
@@ -232,3 +235,38 @@ class TestButtonsPage:
         message = page.get_dynamic_click_message()
 
         assert message == "You have done a dynamic click"
+
+
+class TestLinksPage:
+    page_url = ElementsPageUrls.LINKS
+
+    @pytest.fixture()
+    def page(self, driver):
+        return LinksPage(driver, url=TestLinksPage.page_url).open()
+
+    def test_home_link(self, driver, page):
+        page.click_home_link()
+        driver.switch_to.window(driver.window_handles[1])
+
+        assert driver.current_url == BASE_URL
+
+    def test_dynamic_link(self, driver, page):
+        page.click_dynamic_link()
+        driver.switch_to.window(driver.window_handles[1])
+
+        assert driver.current_url == BASE_URL
+
+
+class TestUploadDownloadPage:
+    page_url = ElementsPageUrls.UPLOAD_AND_DOWNLOAD
+
+    @pytest.fixture()
+    def page(self, driver):
+        return UploadDownloadPage(driver, url=TestUploadDownloadPage.page_url).open()
+
+    def test_upload_file(self, page, txt_file: Path):
+        page.upload_file(path=str(txt_file))
+        message = page.get_message()
+        output_file_name = Path(message).name
+
+        assert output_file_name is txt_file.name

@@ -53,3 +53,23 @@ class ButtonsPageLocators:
     DOUBLE_CLICK_MSG = ("xpath", '//p[@id="doubleClickMessage"]')
     RIGHT_CLICK_MSG = ("xpath", '//p[@id="rightClickMessage"]')
     CLICK_ME_MSG = ("xpath", '//p[@id="dynamicClickMessage"]')
+
+
+class LinksPageLocators:
+    HOME_LINK = ("xpath", '//a[@id="simpleLink"]')
+    DYNAMIC_LINK = ("xpath", '//a[@id="dynamicLink"]')
+    CREATED_LINK = ("xpath", '//a[@id="created"]')
+    NO_CONTENT_LINK = ("xpath", '//a[@id="no-content"]')
+    MOVED_LINK = ("xpath", '//a[@id="moved"]')
+    BAD_REQUEST_LINK = ("xpath", '//a[@id="bad-request"]')
+    UNAUTHORIZED_LINK = ("xpath", '//a[@id="unauthorized"]')
+    FORBIDDEN_LINK = ("xpath", '//a[@id="forbidden"]')
+    NOT_FOUND_LINK = ("xpath", '//a[@id="invalid-url"]')
+
+    RESPONSE_MSG = ("xpath", '//p[@id="linkResponse"]')
+
+
+class UploadDownloadPageLocators:
+    DOWNLOAD_BTN = ("xpath", '//a[@id="downloadButton"]')
+    CHOOSE_FILE_BTN = ("xpath", '//input[@id="uploadFile"]')
+    MESSAGE = ("xpath", '//p[@id="uploadedFilePath"]')

@@ -221,3 +221,29 @@ class ButtonsPage(BasePage):
 
     def get_dynamic_click_message(self) -> str:
         return self.element_is_visible(self.L.CLICK_ME_MSG).text
+
+
+class LinksPage(BasePage):
+    L = locators.LinksPageLocators()
+
+    def get_response_msg(self):
+        return self.element_is_visible(self.L.RESPONSE_MSG).text
+
+    def click_home_link(self):
+        self.element_is_visible(self.L.HOME_LINK).click()
+
+    def click_dynamic_link(self):
+        self.element_is_visible(self.L.DYNAMIC_LINK).click()
+
+
+class UploadDownloadPage(BasePage):
+    L = locators.UploadDownloadPageLocators()
+
+    def click_download_btn(self):
+        self.element_is_presented(self.L.DOWNLOAD_BTN).click()
+
+    def upload_file(self, path):
+        self.element_is_presented(self.L.CHOOSE_FILE_BTN).send_keys(path)
+
+    def get_message(self):
+        return self.element_is_visible(self.L.MESSAGE).text
