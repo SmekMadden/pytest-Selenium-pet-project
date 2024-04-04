@@ -19,6 +19,7 @@ from pages.elements_page import (
     ButtonsPage,
     LinksPage,
     UploadDownloadPage,
+    DynamicPropertiesPage,
 )
 from urls import BASE_URL, ElementsPageUrls
 
@@ -265,8 +266,38 @@ class TestUploadDownloadPage:
         return UploadDownloadPage(driver, url=TestUploadDownloadPage.page_url).open()
 
     def test_upload_file(self, page, txt_file: Path):
+        """This test uploads a file to the website, which then displays a
+        message indicating the path where the file was saved.
+
+        The test verifies that the name of the uploaded file matches the
+        name of the file in the displayed path.
+
+        """
         page.upload_file(path=str(txt_file))
         message = page.get_message()
         output_file_name = Path(message).name
 
         assert output_file_name is txt_file.name
+
+
+class TestDynamicPropertiesPage:
+    page_url = ElementsPageUrls.DYNAMIC_PROPERTIES
+
+    @pytest.fixture()
+    def page(self, driver):
+        return DynamicPropertiesPage(driver, url=self.page_url).open()
+
+    def test_color_btn(self, page):
+        """Test that color change after delay."""
+        color_before, color_after = page.get_color_and_color_after_delay(delay=5)
+        assert color_after != color_before
+
+    def test_appears_btn(self, page):
+        """Test that button appears in time."""
+        result: bool = page.btn_is_visible_in_time(timeout=6)
+        assert result, "Button does not appear in time"
+
+    def test_enable_btn(self, page):
+        """Test that button is enabled in time."""
+        result: bool = page.btn_is_enabled_in_time(timeout=6)
+        assert result, "Button is not enabled in time"

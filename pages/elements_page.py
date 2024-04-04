@@ -1,6 +1,8 @@
 import re
+import time
 from typing import Dict, List, Tuple
 
+from selenium.common import TimeoutException
 from selenium.webdriver import Keys
 from selenium.webdriver.remote.webelement import WebElement
 
@@ -226,7 +228,7 @@ class ButtonsPage(BasePage):
 class LinksPage(BasePage):
     L = locators.LinksPageLocators()
 
-    def get_response_msg(self):
+    def get_response_msg(self) -> str:
         return self.element_is_visible(self.L.RESPONSE_MSG).text
 
     def click_home_link(self):
@@ -245,5 +247,32 @@ class UploadDownloadPage(BasePage):
     def upload_file(self, path):
         self.element_is_presented(self.L.CHOOSE_FILE_BTN).send_keys(path)
 
-    def get_message(self):
+    def get_message(self) -> str:
         return self.element_is_visible(self.L.MESSAGE).text
+
+
+class DynamicPropertiesPage(BasePage):
+    L = locators.DynamicPropertiesPageLocators()
+
+    def get_color_and_color_after_delay(self, delay) -> tuple[str, str]:
+        btn: WebElement = self.element_is_presented(self.L.COLOR_CHANGE_BTN)
+
+        color_before = btn.value_of_css_property("color")
+        time.sleep(delay)
+        color_after = btn.value_of_css_property("color")
+
+        return color_before, color_after
+
+    def btn_is_visible_in_time(self, timeout) -> bool:
+        try:
+            self.element_is_visible(self.L.VISIBLE_BTN, timeout=timeout)
+        except TimeoutException:
+            return False
+        return True
+
+    def btn_is_enabled_in_time(self, timeout) -> bool:
+        try:
+            self.element_is_clickable(self.L.ENABLE_BTN, timeout=timeout)
+        except TimeoutException:
+            return False
+        return True

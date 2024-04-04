@@ -73,3 +73,9 @@ class UploadDownloadPageLocators:
     DOWNLOAD_BTN = ("xpath", '//a[@id="downloadButton"]')
     CHOOSE_FILE_BTN = ("xpath", '//input[@id="uploadFile"]')
     MESSAGE = ("xpath", '//p[@id="uploadedFilePath"]')
+
+
+class DynamicPropertiesPageLocators:
+    ENABLE_BTN = ("xpath", '//button[@id="enableAfter"]')
+    COLOR_CHANGE_BTN = ("xpath", '//button[@id="colorChange"]')
+    VISIBLE_BTN = ("xpath", '//button[@id="visibleAfter"]')
