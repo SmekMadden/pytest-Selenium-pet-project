@@ -10,6 +10,8 @@ from pathlib import Path
 from faker import Faker
 
 from config import BASE_DIR
+from data.data_generator_factories import DataGeneratorFactory, FakerGeneratorFactory
+from data.object_generators import generate_person
 
 
 @pytest.fixture(scope="function")
@@ -36,3 +38,9 @@ def txt_file():
 
     yield path
     os.remove(path)
+
+
+@pytest.fixture(scope="function")
+def generated_person():
+    factory: DataGeneratorFactory = FakerGeneratorFactory()
+    return generate_person(data_generator=factory.create_generator())

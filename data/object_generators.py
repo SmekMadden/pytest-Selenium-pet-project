@@ -24,4 +24,5 @@ def generate_person(
         permanent_address=data_generator.gen_address().replace("\n", " "),
         salary=random.randint(salary_range[0], salary_range[1]),  # noqa
         department=random.choice(("Compliance", "Insurance", "Legal")),  # noqa
+        phone_number=data_generator.gen_phone_number(),
     )

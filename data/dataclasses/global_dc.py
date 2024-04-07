@@ -12,3 +12,4 @@ class Person:
     permanent_address: str | None = None
     salary: int | None = None
     department: str | None = None
+    phone_number: int | None = None

@@ -11,3 +11,7 @@ class ElementsPageUrls:
     BROKEN_LINKS = BASE_URL + "broken/"
     UPLOAD_AND_DOWNLOAD = BASE_URL + "upload-download/"
     DYNAMIC_PROPERTIES = BASE_URL + "dynamic-properties/"
+
+
+class RegistrationFormPageUrls:
+    REGISTRATION_FORM = BASE_URL + "automation-practice-form/"

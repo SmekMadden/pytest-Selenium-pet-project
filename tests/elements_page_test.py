@@ -5,12 +5,7 @@ from typing import Tuple
 import pytest
 from selenium.webdriver.remote.webelement import WebElement
 
-from data.data_generator_factories import (
-    DataGeneratorFactory,
-    FakerGeneratorFactory,
-)
 from data.dataclasses.global_dc import Person
-from data.object_generators import generate_person
 from pages.elements_page import (
     TextBoxPage,
     CheckBoxPage,
@@ -22,12 +17,6 @@ from pages.elements_page import (
     DynamicPropertiesPage,
 )
 from urls import BASE_URL, ElementsPageUrls
-
-
-@pytest.fixture(scope="function")
-def generated_person():
-    factory: DataGeneratorFactory = FakerGeneratorFactory()
-    return generate_person(data_generator=factory.create_generator())
 
 
 class TestTextBoxPage:

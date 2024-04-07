@@ -54,7 +54,9 @@ repos:
 
           # E203 whitespace before ':'  that added by "black" in slices
           # https://github.com/psf/black/blob/06ccb88bf2bd35a4dc5d591bb296b5b299d07323/docs/guides/using_black_with_other_tools.md#flake8
-          --extend-ignore=E203
+          --extend-ignore=E203,
+          # allow to use random module
+          --extend-ignore=DUO102
 
         ]
         exclude: .git|__pycache__

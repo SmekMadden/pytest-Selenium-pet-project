@@ -3,9 +3,6 @@ from abc import ABC, abstractmethod
 from faker import Faker
 
 
-# Strategy pattern
-
-
 class DataGenerator(ABC):
     @abstractmethod
     def gen_first_name(self):
@@ -21,6 +18,10 @@ class DataGenerator(ABC):
 
     @abstractmethod
     def gen_address(self):
+        ...
+
+    @abstractmethod
+    def gen_phone_number(self):
         ...
 
 
@@ -39,3 +40,6 @@ class FakerGenerator(DataGenerator, ABC):
 
     def gen_address(self):
         return self.fake.address()
+
+    def gen_phone_number(self):
+        return self.fake.random_number(digits=10)
